@@ -1,3 +1,9 @@
+Canopy openess pipeline
+================
+Maria Lucia Gonzalez Torres
+2022-01-24
+
+
 ## House keeping
 
     # if you want, clear the workspace
