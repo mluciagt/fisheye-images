@@ -1,4 +1,4 @@
-Canopy openess pipeline
+Canopy openess
 ================
 Maria Lucia Gonzalez Torres
 2022-01-24
