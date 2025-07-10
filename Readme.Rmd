@@ -1,15 +1,20 @@
 ---
-title: "Canopy openess pipeline"
+title: "Canopy openess"
 author: "Maria Lucia Gonzalez Torres"
-date: "2022-01-24"
-output:
-  html_document:
-    toc: true
-    toc_float: true
+date: "2025-07-06"
+output: github_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#",
+  fig.path = "figures/README-",
+  out.width = '60%', 
+  fig.align='center',
+  warning = FALSE, 
+  message= FALSE
+)
 ```
 
 ## House keeping
@@ -32,29 +37,29 @@ image_folder <- "NAME_OF_YOUR_FOLDER_CONTAINING_JPEG_IMAGES"
 ```
 
 ```{r, echo = FALSE}
-setwd("/Volumes/OneTouch/UdS/FISHEYE/")
+setwd("/Volumes/OneTouch/UdS/FISHEYE/FISHEYE_GIT/")
 pacman::p_load(hemispheR, # For canopy fish-eye images processing
                dplyr, # For grammar, data manipulation
                terra, # For geographic (spatial) data manipulation
                magick, # For image manipulation
                exifr # For extracting metadata
                )
-image_folder <- "FisheyeJPEG"
+image_folder <- "figures"
 ```
 
 ## Import Image 
 ```{r, eval=FALSE}
 image_file <- file.path(image_folder, "IMAGE1.jpg")
 # plot the raster image
-raster_file <- rast(image_file)
-plot(raster_file)
+terra::plotRGB(terra::rast(image_file))
 ```
 
-```{r, echo=FALSE}
-image_file <- file.path(image_folder, "FC2_Dicra.jpg")
-raster_file <- rast(image_file)
-plot(raster_file)
+```{r, echo=F, message=F, warning=F}
+image_file <- file.path(image_folder, "README_FC2_Dicra.jpg")
+terra::plotRGB(terra::rast(image_file))
 ```
+
+
 
 ## Select metadata information (optional)
 ```{r}

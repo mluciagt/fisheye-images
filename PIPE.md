@@ -1,31 +1,42 @@
+Canopy openess pipeline
+================
+Maria Lucia Gonzalez Torres
+2022-01-24
+
 ## House keeping
 
-    # if you want, clear the workspace
-    rm(list = ls())
+``` r
+# if you want, clear the workspace
+rm(list = ls())
 
-    # set the working directory
-    setwd("/Your/working/directory/here")
+# set the working directory
+setwd("/Your/working/directory/here")
 
-    # load useful library
-    pacman::p_load(hemispheR, # For canopy fish-eye images processing
-                   dplyr, # For grammar, data manipulation
-                   terra, # For geographic (spatial) data manipulation
-                   magick, # For image manipulation
-                   exifr # For extracting metadata
-                   )
+# load useful library
+pacman::p_load(hemispheR, # For canopy fish-eye images processing
+               dplyr, # For grammar, data manipulation
+               terra, # For geographic (spatial) data manipulation
+               magick, # For image manipulation
+               exifr # For extracting metadata
+               )
 
-    image_folder <- "NAME_OF_YOUR_FOLDER_CONTAINING_JPEG_IMAGES"
+image_folder <- "NAME_OF_YOUR_FOLDER_CONTAINING_JPEG_IMAGES"
+```
 
 ## Import Image
 
-    image_file <- file.path(image_folder, "IMAGE1.jpg")
-    # plot the raster image
-    terra::plotRGB(terra::rast(image_file))
+``` r
+image_file <- file.path(image_folder, "IMAGE1.jpg")
+# plot the raster image
+terra::plotRGB(terra::rast(image_file))
+```
 
-<img src="figures/README-unnamed-chunk-5-1.png" width="60%" style="display: block; margin: auto;" />
+<img src="figures/unnamed-chunk-5-1.png" width="60%" style="display: block; margin: auto;" />
 
-## Select metadata information (optional)
 
+    ## Select metadata information (optional)
+
+    ``` r
     xmp_data <- read_exif(image_file) %>%
       select(
         FileName,
@@ -39,30 +50,32 @@
     glimpse(xmp_data)
     # Rows: 1
     # Columns: 7
-    # $ FileName     <chr> "README_FC2_Dicra.jp…
+    # $ FileName     <chr> "README_FC2_Dicra.jpg"
     # $ CreateDate   <chr> "2025:05:31 14:46:35"
-    # $ LensID       <chr> "iPhone 13 back dual…
+    # $ LensID       <chr> "iPhone 13 back dual wide camera 5.1mm f/1.6"
     # $ Megapixels   <dbl> 12.19277
     # $ GPSLatitude  <dbl> 48.52182
     # $ GPSLongitude <dbl> -79.43314
     # $ GPSAltitude  <dbl> 325.4988
 
-## import\_fisheye
+## import_fisheye
 
 This function imports and prepares a fisheye image for further analysis
 (e.g. binarization or canopy structure metrics). It crops and resizes
 the image based on lens characteristics and user preferences.
 
-    img<-import_fisheye(filename=image_file,
-                        channel = 3,
-                        circ.mask=list(xc=1890,yc=1512,rc=1510),
-                        circular=TRUE,
-                        gamma=2.2,
-                        stretch=FALSE,
-                        display=TRUE,
-                        message=FALSE)
+``` r
+img<-import_fisheye(filename=image_file,
+                    channel = 3,
+                    circ.mask=list(xc=1890,yc=1512,rc=1510),
+                    circular=TRUE,
+                    gamma=2.2,
+                    stretch=FALSE,
+                    display=TRUE,
+                    message=FALSE)
+```
 
-<img src="figures/README-unnamed-chunk-7-1.png" width="60%" style="display: block; margin: auto;" />
+<img src="figures/unnamed-chunk-7-1.png" width="60%" style="display: block; margin: auto;" />
 
 *filename*  
 Character. The input image filename.
@@ -113,22 +126,24 @@ radius.
 default = TRUE   
 If is set to TRUE, it prints the mask used for importing the image.
 
-## binarize\_fisheye
+## binarize_fisheye
 
 This function converts a hemispherical (fisheye) image to a binary
 image, typically for estimating canopy openness or light penetration.
 Several thresholding methods can be used.
 
-    img.bw <- binarize_fisheye(img,
-                                 method = 'Otsu',
-                                 zonal = FALSE,
-                                 manual = NULL,
-                                 display = TRUE,
-                                 export = FALSE)
+``` r
+img.bw <- binarize_fisheye(img,
+                             method = 'Otsu',
+                             zonal = FALSE,
+                             manual = NULL,
+                             display = TRUE,
+                             export = FALSE)
+```
 
-<img src="figures/README-unnamed-chunk-8-1.png" width="60%" style="display: block; margin: auto;" />
+<img src="figures/unnamed-chunk-8-1.png" width="60%" style="display: block; margin: auto;" />
 *img*  
-A single layer fisheye image imported by import\_fisheye()
+A single layer fisheye image imported by import_fisheye()
 
 *method*  
 Default = ‘Otsu’   
@@ -155,25 +170,27 @@ If is set to TRUE, it plots the classified binary image.
 Default = FALSE   
 If is set to TRUE, it saves the binary fisheye image as tif file.
 
-## gapfrac\_fisheye
+## gapfrac_fisheye
 
 This function calculates **gap fraction (the proportion of visible
 sky)** from a binarized fisheye image. It divides the image into zenith
 rings and azimuthal segments to estimate light penetration.
 
-    gapfrac <- gapfrac_fisheye(img.bw,
-                                maxVZA = 90,
-                                lens = "equidistant",
-                                startVZA = 0,
-                                endVZA = 90,
-                                nrings = 5,
-                                nseg = 8,
-                                display = TRUE,
-                                message = TRUE)
+``` r
+gapfrac <- gapfrac_fisheye(img.bw,
+                            maxVZA = 90,
+                            lens = "equidistant",
+                            startVZA = 0,
+                            endVZA = 90,
+                            nrings = 5,
+                            nseg = 8,
+                            display = TRUE,
+                            message = TRUE)
+```
 
-<img src="figures/README-unnamed-chunk-9-1.png" width="60%" style="display: block; margin: auto;" />
+<img src="figures/unnamed-chunk-9-1.png" width="60%" style="display: block; margin: auto;" />
 *img.bw*  
-A single layer binarized fisheye image imported by binarize\_fisheye()
+A single layer binarized fisheye image imported by binarize_fisheye()
 
 *maxVZA*  
 DEFAULT = 90  
@@ -216,36 +233,38 @@ If set to TRUE, prints progress and summary messages.
 DEFAULT = FALSE  
 If set to TRUE, displays the ring and segment layout on the image.
 
-## canopy\_fisheye
+## canopy_fisheye
 
-    canopy_report <- canopy_fisheye(rdfw = gapfrac) %>%
-      rename(PhotoID = id) # to match excel datasheet
-    glimpse(canopy_report)
-    # Rows: 1
-    # Columns: 20
-    # $ PhotoID  <chr> "README_FC2_Dicra.jpg"
-    # $ Le       <dbl> 0.96
-    # $ L        <dbl> 1.14
-    # $ LX       <dbl> 0.84
-    # $ LXG1     <dbl> 0.58
-    # $ LXG2     <dbl> 0.44
-    # $ DIFN     <dbl> 39.094
-    # $ MTA.ell  <dbl> 14
-    # $ x        <dbl> 5.43
-    # $ VZA      <chr> "9_27_45_63_81"
-    # $ rings    <int> 5
-    # $ azimuths <int> 8
-    # $ mask     <chr> "1890_1512_1510"
-    # $ lens     <chr> "equidistant"
-    # $ channel  <chr> "3"
-    # $ stretch  <chr> "FALSE"
-    # $ gamma    <chr> "2.2"
-    # $ zonal    <chr> "FALSE"
-    # $ method   <chr> "Otsu"
-    # $ thd      <chr> "111"
+``` r
+canopy_report <- canopy_fisheye(rdfw = gapfrac) %>%
+  rename(PhotoID = id) # to match excel datasheet
+glimpse(canopy_report)
+# Rows: 1
+# Columns: 20
+# $ PhotoID  <chr> "README_FC2_Dicra.jpg"
+# $ Le       <dbl> 0.96
+# $ L        <dbl> 1.14
+# $ LX       <dbl> 0.84
+# $ LXG1     <dbl> 0.58
+# $ LXG2     <dbl> 0.44
+# $ DIFN     <dbl> 39.094
+# $ MTA.ell  <dbl> 14
+# $ x        <dbl> 5.43
+# $ VZA      <chr> "9_27_45_63_81"
+# $ rings    <int> 5
+# $ azimuths <int> 8
+# $ mask     <chr> "1890_1512_1510"
+# $ lens     <chr> "equidistant"
+# $ channel  <chr> "3"
+# $ stretch  <chr> "FALSE"
+# $ gamma    <chr> "2.2"
+# $ zonal    <chr> "FALSE"
+# $ method   <chr> "Otsu"
+# $ thd      <chr> "111"
+```
 
 *rdfw*  
-Dataframe. The input dataframe generated from gapfrac\_fisheye(), which
+Dataframe. The input dataframe generated from gapfrac_fisheye(), which
 contains gap fraction for zenith and azimuth bins.
 
 ### Site Comparison
