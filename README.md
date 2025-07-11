@@ -1,7 +1,6 @@
 Canopy openess
 ================
-Maria Lucia Gonzalez Torres
-2022-01-24
+https://github.com/cran/hemispheR
 
 
 ## House keeping
