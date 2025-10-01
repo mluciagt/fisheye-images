@@ -132,8 +132,8 @@ Several thresholding methods can be used.
                                  export = FALSE)
 
 <img src="figures/README-unnamed-chunk-8-1.png" width="60%" style="display: block; margin: auto;" />
-*img*  
-A single layer fisheye image imported by import\_fisheye()
+*img* 
+A single layer fisheye image imported by import_fisheye()  
 
 *method*  
 Default = ‘Otsu’   
