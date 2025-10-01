@@ -129,8 +129,8 @@ img.bw <- binarize_fisheye(img,
                              display = TRUE,
                              export = FALSE)
 ```
-*img*   
-A single layer fisheye image imported by import_fisheye()
+*img*     
+A single layer fisheye image imported by import_fisheye() 
 
 *method*   
 Default = 'Otsu'\   
