@@ -180,7 +180,7 @@ rings and azimuthal segments to estimate light penetration.
 
 <img src="figures/README-unnamed-chunk-9-1.png" width="60%" style="display: block; margin: auto;" />
   
-*img.bw* 
+*img.bw*     
 A single layer binarized fisheye image imported by binarize_fisheye() 
 
 *maxVZA*  
